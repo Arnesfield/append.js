@@ -12,7 +12,7 @@ var append = {
     
     // for each selector
     $(':regex(class,' + regex + ')').each(function() {
-      var e = $(this), retain = 0, remove = '';
+      var e = $(this), retain, remove = '';
       
       // while this has class from args
       while (e.attr('class').match(regex)) {
@@ -34,16 +34,16 @@ var append = {
         e.removeClass(arg1.arg);
         var arg2 = get(arg1.pos);
         
-        retain = (retain === 0) ? e.attr('class').substr(0,arg1.pos).trim() : retain;
-        
+        retain = (retain == null) ? e.attr('class').substr(0,arg1.pos).trim() : null;
         var toAddStr = e.attr('class').substring(arg1.pos, arg2.pos).trim().split(' ');
-        if (toAddStr != '') {
-          toAddStr.forEach(function(f) {
-            var pos = /[_a-zA-Z]/.exec(f).index;
-            e.addClass(f.substr(0, pos) + arg1.arg + f.substr(pos));
-            remove += f + ' ';
-          });
-        }
+        if (!toAddStr.length)
+          continue;
+        
+        toAddStr.forEach(function(f) {
+          var pos = /[_a-zA-Z]/.exec(f).index;
+          e.addClass(f.substr(0, pos) + arg1.arg + f.substr(pos));
+          remove += f + ' ';
+        });
       }
       
       e.removeClass(remove).addClass(retain);
