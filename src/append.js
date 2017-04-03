@@ -15,15 +15,9 @@ var append = {
       var e = $(this), retain = 0, remove = '';
       
       // while this has class from args
-      while ((function() {
-        var b = 0;
-        args.forEach(function(f) {
-          if (!b && e.hasClass(f)) b = 1;
-        });
-        return b;
-      })()) {
+      while (e.attr('class').match(regex)) {
         function get(start) {
-          var pos = e.attr('class').length;
+          var arg = '', pos = e.attr('class').length;
           args.forEach(function(f) {
             var i = e.attr('class').indexOf(f);
             if (i <= pos && i >= start) {
